@@ -12,7 +12,22 @@ const gpa = util.gpa;
 const data = @embedFile("../data/day01.txt");
 
 pub fn main() !void {
+    print("{}\n", .{task1()});
+}
 
+fn task1() i64 {
+    var largerCount: i64 = -1;
+    var lines = tokenize(u8, data, "\r\n");
+    var current: i64 = 0;
+    var previous: i64 = 0;
+    while (lines.next()) |line| {
+        current = parseInt(i64, line, 10) catch unreachable;
+        if (current > previous) {
+            largerCount += 1;
+        }
+        previous = current;
+    }
+    return largerCount;
 }
 
 // Useful stdlib functions
