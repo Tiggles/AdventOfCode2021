@@ -13,6 +13,7 @@ const data = @embedFile("../data/day01.txt");
 
 pub fn main() !void {
     print("{}\n", .{task1()});
+    print("{}\n", .{task2()});
 }
 
 fn task1() i64 {
@@ -26,6 +27,37 @@ fn task1() i64 {
             largerCount += 1;
         }
         previous = current;
+    }
+    return largerCount;
+}
+
+fn task2() i64 {
+    var largerCount: i64 = 0;
+    var lines = tokenize(u8, data, "\r\n");
+
+    var indexCounter: u64 = 0;
+    var window: [9]i64 = .{ 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    while (lines.next()) |line| {
+        window[indexCounter % 9] = parseInt(i64, line, 10) catch unreachable;
+        var i: u8 = 0;
+        var a: i64 = 0;
+        var b: i64 = 0;
+        while (i < 4) : (i += 1) {
+            if (indexCounter < 3) break;
+            if (i == 0) {
+                b += window[(indexCounter - i) % 9];
+            } else if (i == 1 or i == 2) {
+                a += window[(indexCounter - i) % 9];
+                b += window[(indexCounter - i) % 9];
+            } else if (i == 3) {
+                a += window[(indexCounter - i) % 9];
+            }
+        }
+        if (a < b) {
+            largerCount += 1;
+        }
+        indexCounter += 1;
     }
     return largerCount;
 }
