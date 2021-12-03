@@ -11,8 +11,66 @@ const gpa = util.gpa;
 
 const data = @embedFile("../data/day02.txt");
 
+fn task1() i64 {
+    var lines = tokenize(u8, data, "\n");
+    var x: i64 = 0;
+    var y: i64 = 0;
+
+    while (lines.next()) |line| {
+        var commandAndValue = tokenize(u8, line, " ");
+        var command = commandAndValue.next();
+        var value = commandAndValue.next();
+        var parsedValue = parseInt(i64, value.?, 10) catch unreachable;
+
+        if (std.mem.eql(u8, command.?, "up")) {
+            y -= parsedValue;
+        } else if (std.mem.eql(u8, command.?, "down")) {
+            y += parsedValue;
+        } else if (std.mem.eql(u8, command.?, "forward")) {
+            x += parsedValue;
+        } else {
+            std.debug.print("Unknown {s}", .{command});
+        }
+    }
+    return x * y;
+}
+
+fn task2() i64 {
+    // down X increases your aim by X units.
+    // up X decreases your aim by X units.
+    // forward X does two things:
+    //     It increases your horizontal position by X units.
+    //     It increases your depth by your aim multiplied by X.
+
+    var horizontalPosition: i64 = 0;
+    var aim: i64 = 0;
+    var depth: i64 = 0;
+    var lines = tokenize(u8, data, "\n");
+
+    while (lines.next()) |line| {
+        var commandAndValue = tokenize(u8, line, " ");
+        var command = commandAndValue.next();
+        var value = commandAndValue.next();
+        var parsedValue = parseInt(i64, value.?, 10) catch unreachable;
+
+        if (std.mem.eql(u8, command.?, "up")) {
+            aim -= parsedValue;
+        } else if (std.mem.eql(u8, command.?, "down")) {
+            aim += parsedValue;
+        } else if (std.mem.eql(u8, command.?, "forward")) {
+            horizontalPosition += parsedValue;
+            depth += aim * parsedValue;
+        } else {
+            std.debug.print("Unknown {s}", .{command});
+        }
+    }
+    // multiply your final horizontal position by your final depth
+    return horizontalPosition * depth;
+}
+
 pub fn main() !void {
-    
+    print("{}\n", .{task1()});
+    print("{}\n", .{task2()});
 }
 
 // Useful stdlib functions
