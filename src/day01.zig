@@ -36,22 +36,23 @@ fn task2() i64 {
     var lines = tokenize(u8, data, "\r\n");
 
     var indexCounter: u64 = 0;
-    var window: [9]i64 = .{ 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    const WINDOW_SIZE = 4;
+    var window: [WINDOW_SIZE]i64 = .{ 0, 0, 0, 0 };
 
     while (lines.next()) |line| {
-        window[indexCounter % 9] = parseInt(i64, line, 10) catch unreachable;
+        window[indexCounter % WINDOW_SIZE] = parseInt(i64, line, 10) catch unreachable;
         var i: u8 = 0;
         var a: i64 = 0;
         var b: i64 = 0;
         while (i < 4) : (i += 1) {
             if (indexCounter < 3) break;
             if (i == 0) {
-                b += window[(indexCounter - i) % 9];
+                b += window[(indexCounter - i) % WINDOW_SIZE];
             } else if (i == 1 or i == 2) {
-                a += window[(indexCounter - i) % 9];
-                b += window[(indexCounter - i) % 9];
+                a += window[(indexCounter - i) % WINDOW_SIZE];
+                b += window[(indexCounter - i) % WINDOW_SIZE];
             } else if (i == 3) {
-                a += window[(indexCounter - i) % 9];
+                a += window[(indexCounter - i) % WINDOW_SIZE];
             }
         }
         if (a < b) {
