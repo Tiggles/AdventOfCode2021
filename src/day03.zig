@@ -11,8 +11,40 @@ const gpa = util.gpa;
 
 const data = @embedFile("../data/day03.txt");
 
+const BIT_COUNT = 12;
+
 pub fn main() !void {
-    
+    var lines = tokenize(u8, data, "\n");
+    var totalLineCount: u64 = 0;
+    var gammaRate: u64 = 0;
+    var epsilonRate: u64 = 0;
+
+    var bitCount: [BIT_COUNT]u32 = .{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    while (lines.next()) |line| {
+        var bitIndex: u8 = 0;
+        for (line) |num| {
+            bitCount[bitIndex] += toSortaBinary(num);
+            bitIndex = (bitIndex + 1) % 12;
+        }
+        totalLineCount += 1;
+    }
+
+    const cutOff = totalLineCount / 2;
+    for (bitCount) |indexValue, index| {
+        if (indexValue > cutOff) {
+            gammaRate += std.math.pow(u64, 2, BIT_COUNT - index - 1);
+        } else {
+            epsilonRate += std.math.pow(u64, 2, BIT_COUNT - index - 1);
+        }
+    }
+
+    print("{}\n", .{gammaRate * epsilonRate});
+}
+
+// 5208 * 2982 
+
+fn toSortaBinary(num: u8) u8 {
+    return num - 48;
 }
 
 // Useful stdlib functions
