@@ -35,7 +35,7 @@ pub fn main() !void {
         }
     }
 
-    var epsilonRate = ~@intCast(u12, gammaRate);
+    const epsilonRate = ~@intCast(u12, gammaRate);
 
     print("{}\n", .{gammaRate * epsilonRate});
 }
