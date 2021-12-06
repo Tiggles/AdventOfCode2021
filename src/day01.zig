@@ -41,19 +41,15 @@ fn task2() i64 {
 
     while (lines.next()) |line| {
         window[indexCounter % WINDOW_SIZE] = parseInt(i64, line, 10) catch unreachable;
-        var i: u8 = 0;
         var a: i64 = 0;
         var b: i64 = 0;
-        while (i < 4) : (i += 1) {
-            if (indexCounter < 3) break;
-            if (i == 0) {
-                b += window[(indexCounter - i) % WINDOW_SIZE];
-            } else if (i == 1 or i == 2) {
-                a += window[(indexCounter - i) % WINDOW_SIZE];
-                b += window[(indexCounter - i) % WINDOW_SIZE];
-            } else if (i == 3) {
-                a += window[(indexCounter - i) % WINDOW_SIZE];
-            }
+        if (indexCounter >= 3) {
+            b += window[(indexCounter - 0) % WINDOW_SIZE];
+            b += window[(indexCounter - 1) % WINDOW_SIZE];
+            b += window[(indexCounter - 2) % WINDOW_SIZE];
+            a += window[(indexCounter - 1) % WINDOW_SIZE];
+            a += window[(indexCounter - 2) % WINDOW_SIZE];
+            a += window[(indexCounter - 3) % WINDOW_SIZE];
         }
         if (a < b) {
             largerCount += 1;
