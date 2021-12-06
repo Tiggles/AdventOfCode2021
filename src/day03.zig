@@ -17,7 +17,6 @@ pub fn main() !void {
     var lines = tokenize(u8, data, "\n");
     var totalLineCount: u64 = 0;
     var gammaRate: u64 = 0;
-    var epsilonRate: u64 = 0;
 
     var bitCount: [BIT_COUNT]u32 = .{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     while (lines.next()) |line| {
@@ -33,10 +32,10 @@ pub fn main() !void {
     for (bitCount) |indexValue, index| {
         if (indexValue > cutOff) {
             gammaRate += std.math.pow(u64, 2, BIT_COUNT - index - 1);
-        } else {
-            epsilonRate += std.math.pow(u64, 2, BIT_COUNT - index - 1);
         }
     }
+
+    var epsilonRate = ~@intCast(u12, gammaRate);
 
     print("{}\n", .{gammaRate * epsilonRate});
 }
