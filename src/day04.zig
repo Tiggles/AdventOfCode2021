@@ -12,7 +12,19 @@ const gpa = util.gpa;
 const data = @embedFile("../data/day04.txt");
 
 pub fn main() !void {
-    
+    print("{}\n", .{task1()});
+}
+
+fn task1() u64 {
+    var lines = tokenize(u8, data, "\n");
+    var line = lines.next() orelse .{0};
+    var bingos = tokenize(u8, line, ",") orelse .{};
+    var bingoList = List(u64).init;
+    while (bingos) |bingoNumber| {
+        var parsedNumber = try parseInt(u64, bingoNumber, 10);
+        bingoList.append(parsedNumber);
+    }
+    return 0;
 }
 
 // Useful stdlib functions

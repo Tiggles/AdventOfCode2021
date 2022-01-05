@@ -14,6 +14,11 @@ const data = @embedFile("../data/day03.txt");
 const BIT_COUNT = 12;
 
 pub fn main() !void {
+    print("{}\n", .{task1()});
+    print("{}\n", .{task2()});
+}
+
+fn task1() u64 {
     var lines = tokenize(u8, data, "\n");
     var totalLineCount: u64 = 0;
     var gammaRate: u64 = 0;
@@ -37,10 +42,18 @@ pub fn main() !void {
 
     const epsilonRate = ~@intCast(u12, gammaRate);
 
-    print("{}\n", .{gammaRate * epsilonRate});
+    return gammaRate * epsilonRate; // 5208 * 2982
 }
 
-// 5208 * 2982 
+fn task2() u64 {
+    var lines = tokenize(u8, data, "\n");
+    
+    while (lines.next()) |line| {
+        _ = line;
+    }
+
+    return 0;
+}
 
 fn toSortaBinary(num: u8) u8 {
     return num - 48;
